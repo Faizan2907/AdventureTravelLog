@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".SignupActivity"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|top"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text="Time for Adventure"
+            android:textColor="@color/white"
+            android:textSize="32sp" />
+
+        <EditText
+            android:id="@+id/nameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/edittext_background"
+            android:elevation="4dp"
+            android:fontFamily="@font/roboto"
+            android:hint="Trip Name"
+            android:inputType="text"
+            android:paddingStart="15dp"
+            android:textColor="@color/white"
+            android:textCursorDrawable="@drawable/edit_text_cursor"
+            android:textColorHint="@color/white"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/destinationEditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/edittext_background"
+            android:elevation="4dp"
+            android:fontFamily="@font/roboto"
+            android:hint="Destination"
+            android:inputType="text"
+            android:paddingStart="15dp"
+            android:textColor="@color/white"
+            android:textCursorDrawable="@drawable/edit_text_cursor"
+            android:textColorHint="@color/white"
+            android:textSize="18sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/rectangle2"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="30dp">
+
+            <ImageView
+                android:id="@+id/chooseStartDate"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:padding="6dp"
+                android:foreground="@drawable/circle_round_effect"
+                android:src="@drawable/ic_baseline_calendar_month_24" />
+
+            <EditText
+                android:id="@+id/startDate"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/edittext_background"
+                android:clickable="true"
+                android:editable="false"
+                android:elevation="4dp"
+                android:fontFamily="@font/roboto"
+                android:hint="Start Date"
+                android:paddingStart="15dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/rectangle2"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="30dp">
+
+            <ImageView
+                android:id="@+id/chooseEndDate"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:padding="6dp"
+                android:foreground="@drawable/circle_round_effect"
+                android:src="@drawable/ic_baseline_calendar_month_24" />
+
+            <EditText
+                android:id="@+id/endDate"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/edittext_background"
+                android:clickable="true"
+                android:editable="false"
+                android:elevation="4dp"
+                android:fontFamily="@font/roboto"
+                android:hint="End Date"
+                android:paddingStart="15dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/descriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/edittext_background"
+            android:elevation="4dp"
+            android:fontFamily="@font/roboto"
+            android:hint="Description"
+            android:inputType="textMultiLine"
+            android:lines="4"
+            android:paddingStart="15dp"
+            android:paddingTop="15dp"
+            android:gravity="top"
+            android:textColor="@color/white"
+            android:textCursorDrawable="@drawable/edit_text_cursor"
+            android:textColorHint="@color/white"
+            android:textSize="18sp" />
+
+        <!-- Activities or Landmarks -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="30dp"
+            >
+
+            <EditText
+                android:id="@+id/activityNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginEnd="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_background"
+                android:elevation="4dp"
+                android:fontFamily="@font/roboto"
+                android:hint="Activity Name"
+                android:inputType="text"
+                android:paddingStart="15dp"
+                android:textColor="@color/white"
+                android:textCursorDrawable="@drawable/edit_text_cursor"
+                android:textColorHint="@color/white"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_weight="3"
+                >
+
+                <Button
+                    android:id="@+id/addActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:backgroundTint="#025FEA"
+                    android:elevation="4dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="Add"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textFontWeight="700"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/activitiesRecyclerView"
+            android:layout_marginTop="23dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp">
+
+            <Button
+                android:id="@+id/uploadPhotoButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:backgroundTint="#025FEA"
+                android:elevation="4dp"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:text="Upload Photos"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textFontWeight="700"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="50dp"
+            >
+
+            <Button
+                android:id="@+id/createButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:backgroundTint="#025FEA"
+                android:elevation="4dp"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:text="Create Trip"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textFontWeight="700"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+
+

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "917199857894",
+    "project_id": "adventuretravellog",
+    "storage_bucket": "adventuretravellog.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917199857894:android:0f2bb05b7895a16402b327",
+        "android_client_info": {
+          "package_name": "com.example.adventuretravellog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "917199857894-rvr5fh780m0aiijjt50d4pl844kh7vbe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5mvb2m0M-jfbCrilIjwfibY1oDzx-Ltk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "917199857894-rvr5fh780m0aiijjt50d4pl844kh7vbe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

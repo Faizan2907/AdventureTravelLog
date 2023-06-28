@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:gravity="center|top"
+    android:orientation="vertical"
+    tools:context=".TermsAndConditions">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|top"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_width="100dp"
+            android:layout_height="20dp"
+            android:layout_gravity="left"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/arow" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:text="Terms and Conditions"
+            android:textColor="@color/white"
+            android:textSize="28sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="25dp"
+            android:fontFamily="@font/roboto"
+            android:gravity="center|start"
+            android:justificationMode="inter_word"
+            android:text="Terms and Conditions:
+Last Updated: 15/06/2023
+\n\n1. Acceptance of Terms:
+By accessing or using the app, users agree to be bound by these terms and conditions.
+
+\n\n2. User Obligations:
+Users must comply with applicable laws, refrain from prohibited activities, and respect intellectual property rights.
+
+\n\n3. Intellectual Property:
+Ownership of app content is protected, and unauthorized use or reproduction is prohibited.
+
+\n\n4. User-Generated Content:
+Users are responsible for their content, and the app owner can remove or modify inappropriate or infringing content.
+
+\n\n5. Privacy and Data Protection:
+User data is collected, used, and protected according to the app's privacy policy.
+
+\n\n6. Termination:
+The app owner can suspend or terminate user access for violating the terms and conditions.
+
+\n\n7. Disclaimers and Limitations of Liability:
+The app owner is not liable for any damages or losses incurred while using the app.
+
+\n\n8. Indemnification:
+Users agree to indemnify the app owner against any claims or losses resulting from their app usage or violation of terms.
+
+\n\n9. Governing Law and Jurisdiction:
+The terms and conditions are governed by [Jurisdiction] law, and disputes will be resolved in [Jurisdiction] courts.
+
+\n\n10. Modifications:
+The app owner reserves the right to modify the terms and conditions and will notify users of any changes.
+
+\n\n11. Severability:
+If any provision is found invalid, the remaining provisions remain in effect."
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+
+</ScrollView>

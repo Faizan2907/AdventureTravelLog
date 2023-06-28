@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="emailAddress" type="id" />
+    <item name="alreadyHaveAccount" type="id" />
+    <item name="signUpButton" type="id" />
+    <item name="policy" type="id" />
+    <item name="term" type="id" />
+    <item name="agree" type="id" />
+    <item name="createButton" type="id" />
+    <item name="nameEditText" type="id" />
+</resources>
