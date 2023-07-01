@@ -16,22 +16,12 @@
         android:orientation="vertical"
         >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/roboto_bold"
-            android:gravity="center"
-            android:text="Time for Adventure"
-            android:textColor="@color/white"
-            android:textSize="32sp" />
-
         <EditText
             android:id="@+id/nameEditText"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/edittext_background"
             android:elevation="4dp"

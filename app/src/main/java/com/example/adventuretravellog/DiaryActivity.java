@@ -46,7 +46,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class DiaryActivity extends AppCompatActivity {
-    private EditText diaryEntryEditText;
+    private EditText diaryEntryEditText, editTextSearch;
     private Button saveEntryButton, attachedMediaButton;
     private RecyclerView diaryRecyclerView;
     private List<String> itemList; // List to hold items for the RecyclerView
@@ -58,6 +58,12 @@ public class DiaryActivity extends AppCompatActivity {
     DatabaseReference tripRef;
     private Uri selectedImageUri;
     List<DiaryEntry> diaryEntries;
+
+    String diaryId;
+    String mediaType;
+    String mediaUrl;
+    String text;
+    private Uri selectedMediaUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,7 @@ public class DiaryActivity extends AppCompatActivity {
         tripRef = FirebaseDatabase.getInstance().getReference("trips").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(tripId);
 
         diaryEntryEditText = findViewById(R.id.editTextDiaryEntry);
+//        editTextSearch = findViewById(R.id.editTextSearch);
 
         saveEntryButton = findViewById(R.id.buttonSaveEntry);
         attachedMediaButton = findViewById(R.id.buttonAttachMedia);
@@ -86,7 +93,7 @@ public class DiaryActivity extends AppCompatActivity {
 
         diaryEntries = new ArrayList<>();
 
-        diaryAdapter = new DiaryAdapter(diaryEntries); // Create an adapter with the item list
+        diaryAdapter = new DiaryAdapter(diaryEntries, tripId); // Create an adapter with the item list
         diaryRecyclerView.setAdapter(diaryAdapter);
 
         // Add the code to retrieve diary entries
@@ -101,10 +108,10 @@ public class DiaryActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot diarySnapshot : dataSnapshot.getChildren()) {
-                    String diaryId = diarySnapshot.getKey();
-                    String mediaType = diarySnapshot.child("mediaType").getValue(String.class);
-                    String mediaUrl = diarySnapshot.child("mediaUrl").getValue(String.class);
-                    String text = diarySnapshot.child("text").getValue(String.class);
+                    diaryId = diarySnapshot.getKey();
+                    mediaType = diarySnapshot.child("mediaType").getValue(String.class);
+                    mediaUrl = diarySnapshot.child("mediaUrl").getValue(String.class);
+                    text = diarySnapshot.child("text").getValue(String.class);
 
                     // Create a DiaryEntry object using the retrieved values
                     DiaryEntry diaryEntry = new DiaryEntry(diaryId, mediaType, mediaUrl, text);
@@ -163,18 +170,17 @@ public class DiaryActivity extends AppCompatActivity {
 
                 // Upload the selected media file to Firebase Storage
                 uploadMediaToStorage(selectedMediaUri);
+                diaryAdapter.addDiaryEntry(diaryId, mediaType, mediaUrl, diaryText);
 
-                // Clear the diary entry text field
                 diaryEntryEditText.setText("");
+                selectedMediaUri = null;
 
-                // Display a success message or perform any required actions
                 Toast.makeText(getApplicationContext(), "Diary entry saved successfully.", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private Uri selectedMediaUri;
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

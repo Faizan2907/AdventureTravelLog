@@ -85,31 +85,31 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="23dp">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="23dp">-->
 
-            <EditText
-                android:id="@+id/editTextSearch"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="30dp"
-                android:background="@drawable/edittext_background"
-                android:fontFamily="@font/roboto"
-                android:hint="Search... "
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:maxLines="1"
-                android:paddingStart="15dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textCursorDrawable="@drawable/edit_text_cursor"
-                android:textSize="18sp" />
+<!--            <EditText-->
+<!--                android:id="@+id/editTextSearch"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="44dp"-->
+<!--                android:layout_marginStart="30dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginEnd="30dp"-->
+<!--                android:background="@drawable/edittext_background"-->
+<!--                android:fontFamily="@font/roboto"-->
+<!--                android:hint="Search... "-->
+<!--                android:imeOptions="actionDone"-->
+<!--                android:inputType="text"-->
+<!--                android:maxLines="1"-->
+<!--                android:paddingStart="15dp"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textColorHint="@color/white"-->
+<!--                android:textCursorDrawable="@drawable/edit_text_cursor"-->
+<!--                android:textSize="18sp" />-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/diaryItemRecyclerView"

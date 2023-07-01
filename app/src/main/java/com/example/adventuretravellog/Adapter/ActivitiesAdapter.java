@@ -19,6 +19,12 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.Vi
         this.activitiesList = activitiesList;
     }
 
+    public void updateActivities(List<String> newActivitiesList) {
+        activitiesList.clear();
+        activitiesList.addAll(newActivitiesList);
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

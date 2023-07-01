@@ -43,40 +43,7 @@
             android:fontFamily="@font/roboto"
             android:gravity="center|start"
             android:justificationMode="inter_word"
-            android:text="Terms and Conditions:
-Last Updated: 15/06/2023
-\n\n1. Acceptance of Terms:
-By accessing or using the app, users agree to be bound by these terms and conditions.
-
-\n\n2. User Obligations:
-Users must comply with applicable laws, refrain from prohibited activities, and respect intellectual property rights.
-
-\n\n3. Intellectual Property:
-Ownership of app content is protected, and unauthorized use or reproduction is prohibited.
-
-\n\n4. User-Generated Content:
-Users are responsible for their content, and the app owner can remove or modify inappropriate or infringing content.
-
-\n\n5. Privacy and Data Protection:
-User data is collected, used, and protected according to the app's privacy policy.
-
-\n\n6. Termination:
-The app owner can suspend or terminate user access for violating the terms and conditions.
-
-\n\n7. Disclaimers and Limitations of Liability:
-The app owner is not liable for any damages or losses incurred while using the app.
-
-\n\n8. Indemnification:
-Users agree to indemnify the app owner against any claims or losses resulting from their app usage or violation of terms.
-
-\n\n9. Governing Law and Jurisdiction:
-The terms and conditions are governed by [Jurisdiction] law, and disputes will be resolved in [Jurisdiction] courts.
-
-\n\n10. Modifications:
-The app owner reserves the right to modify the terms and conditions and will notify users of any changes.
-
-\n\n11. Severability:
-If any provision is found invalid, the remaining provisions remain in effect."
+            android:text="Terms and Conditions:"
             android:textColor="@color/white"
             android:textSize="18sp" />
 

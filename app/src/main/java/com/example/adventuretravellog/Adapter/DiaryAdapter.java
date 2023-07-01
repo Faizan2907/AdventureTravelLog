@@ -21,9 +21,17 @@ import java.util.List;
 public class DiaryAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
 
     private List<DiaryEntry> diaryEntries;
+    private String tripId;
 
-    public DiaryAdapter(List<DiaryEntry> diaryEntries) {
+    public DiaryAdapter(List<DiaryEntry> diaryEntries, String tripId) {
         this.diaryEntries = diaryEntries;
+        this.tripId = tripId;
+    }
+
+    public void addDiaryEntry(String id, String mediaType, String mediaUrl, String text) {
+        DiaryEntry diaryEntry = new DiaryEntry(id, mediaType, mediaUrl, text);
+        diaryEntries.add(diaryEntry);
+        notifyItemInserted(diaryEntries.size() - 1);
     }
 
     @NonNull
@@ -49,6 +57,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolde
                 Context context = holder.itemView.getContext();
                 Intent intent = new Intent(context, DiaryDetailsActivity.class);
                 intent.putExtra("diaryId", diaryId);
+                intent.putExtra("tripId", tripId);
                 context.startActivity(intent);
             }
         });

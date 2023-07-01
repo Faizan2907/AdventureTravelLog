@@ -152,7 +152,6 @@ public class TripCreationActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(activityName)) {
                     activitiesList.add(activityName);
                     activitiesAdapter.notifyItemInserted(activitiesList.size() - 1);
-
                     activityNameEditText.setText("");
                 }
             }
@@ -164,19 +163,14 @@ public class TripCreationActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_SELECT_IMAGES && resultCode == RESULT_OK) {
             if (data != null) {
-                // Get selected images
                 ClipData clipData = data.getClipData();
                 if (clipData != null) {
-                    // Multiple images selected
                     for (int i = 0; i < clipData.getItemCount(); i++) {
                         Uri imageUri = clipData.getItemAt(i).getUri();
-                        // Add image reference to the photosList
                         photosList.add(imageUri.toString());
                     }
                 } else {
-                    // Single image selected
                     Uri imageUri = data.getData();
-                    // Add image reference to the photosList
                     photosList.add(imageUri.toString());
                 }
                 // Show a message or perform any desired action
@@ -221,29 +215,25 @@ public class TripCreationActivity extends AppCompatActivity {
         String endDate = endDateEditText.getText().toString().trim();
         String description = descriptionEditText.getText().toString().trim();
 
-        // Perform validation on user input
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(destination) ||
                 TextUtils.isEmpty(startDate) || TextUtils.isEmpty(endDate)) {
             displayToast(250, "Please fill in all required fields");
             return;
         }
 
-        // Get the current user's ID
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Create a new Trip object
         Trip trip = new Trip(name, destination, startDate, endDate, null, description, activitiesList);
 
-        // Generate a unique key for the trip entry in Firebase Realtime Database
         String tripKey = tripsRef.child(userId).push().getKey();
 
-        // Store the trip details under the generated key, within the user's trips node
         tripsRef.child(userId).child(tripKey).setValue(trip)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            // Store the images in Firebase Storage
+                            startActivity(new Intent(TripCreationActivity.this, DashboardActivity.class));
+                            finish();
                             storeImagesInStorage(userId, tripKey);
                         } else {
                             displayToast(250, "Failed to create trip: " + task.getException().toString());
@@ -253,20 +243,15 @@ public class TripCreationActivity extends AppCompatActivity {
     }
 
     private void storeImagesInStorage(String userId, String tripKey) {
-        // Get a reference to the Firebase Storage
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
-        // Loop through the photosList and upload each image to Firebase Storage
         for (int i = 0; i < photosList.size(); i++) {
             String imageUrl = photosList.get(i);
 
-            // Generate a unique image filename
             String imageFileName = UUID.randomUUID().toString();
 
-            // Create a reference to the image file in Firebase Storage
             StorageReference imageRef = storageRef.child(userId).child(tripKey).child(imageFileName);
 
-            // Use Glide to load the image and upload it to Firebase Storage
             int finalI = i;
             Glide.with(this)
                     .downloadOnly()
@@ -282,13 +267,10 @@ public class TripCreationActivity extends AppCompatActivity {
 
                         @Override
                         public boolean onResourceReady(File resource, Object model, Target<File> target, DataSource dataSource, boolean isFirstResource) {
-                            // Upload the image file to Firebase Storage
                             Uri imageUri = Uri.fromFile(resource);
                             imageRef.putFile(imageUri)
                                     .addOnSuccessListener(taskSnapshot -> {
-                                        // Get the download URL of the uploaded image
                                         imageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
-                                            // Store the image reference in the Realtime Database under the trip node
                                             String imageDownloadUrl = downloadUri.toString();
                                             tripsRef.child(userId).child(tripKey).child("photosList").child(String.valueOf(finalI)).setValue(imageDownloadUrl);
                                         });
@@ -301,7 +283,6 @@ public class TripCreationActivity extends AppCompatActivity {
                         }
                     })
                     .submit();
-
         }
 
         // Display a success message or perform any desired action

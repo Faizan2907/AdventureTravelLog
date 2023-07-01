@@ -57,6 +57,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                                 public void onSuccess(Void unused) {
                                    // Toast.makeText(ForgetPasswordActivity.this, "Email sent!", Toast.LENGTH_SHORT).show();
                                     displayToast(250, "Email Sent!");
+                                    email.setText("");
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {

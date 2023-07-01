@@ -16,22 +16,12 @@
         android:orientation="vertical"
         >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/roboto_bold"
-            android:gravity="center"
-            android:text="Time for Adventure"
-            android:textColor="@color/white"
-            android:textSize="32sp" />
-
         <EditText
             android:id="@+id/editTextTripName"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="45dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/edittext_background"
             android:elevation="4dp"
@@ -154,25 +144,55 @@
 
         <!-- Activities or Landmarks -->
 
-        <GridView
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Images"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:fontFamily="@font/roboto"
+            android:layout_marginTop="23dp"
+            android:textSize="18sp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            />
+
+        <com.example.adventuretravellog.Adapter.WrappingGridView
             android:id="@+id/gridViewPhotos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:horizontalSpacing="10dp"
             android:numColumns="3"
-            android:horizontalSpacing="8dp"
-            android:verticalSpacing="8dp"
-            android:layout_marginTop="23dp"
+            android:verticalSpacing="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:padding="8dp" />
+            android:stretchMode="columnWidth"
+            android:padding="8dp"
+            />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Activities"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:fontFamily="@font/roboto"
+            android:layout_marginTop="23dp"
+            android:textSize="18sp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/activitiesRecyclerView"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="180dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -181,7 +201,6 @@
             android:layout_marginTop="30dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginBottom="23dp"
             >
 
             <Button

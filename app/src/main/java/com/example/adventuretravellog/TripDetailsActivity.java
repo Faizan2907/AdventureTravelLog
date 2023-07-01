@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.adventuretravellog.Adapter.ActivitiesAdapter;
+import com.example.adventuretravellog.Adapter.PhotoAdapter;
+import com.example.adventuretravellog.Adapter.WrappingGridView;
 import com.example.adventuretravellog.Model.Trip;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,7 +54,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     private EditText editTextDestination;
     private EditText editTextStartDate;
     private EditText editTextEndDate;
-    private GridView gridViewPhotos;
+    private WrappingGridView gridViewPhotos;
     private RecyclerView activitiesRecyclerView;
     private List<String> activitiesList;
     private Button saveChangesButton;
@@ -62,30 +64,26 @@ public class TripDetailsActivity extends AppCompatActivity {
     private Calendar endDateCalendar;
     private SimpleDateFormat dateFormat;
     private Button myDiaryButton;
-
+    ActivitiesAdapter activitiesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_details);
 
-        // Retrieve the trip ID from the intent extras
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            tripId = extras.getString("tripId");
-        }
+        String tripId = getIntent().getStringExtra("tripId");
+
+        gridViewPhotos = findViewById(R.id.gridViewPhotos);
+        photosList = new ArrayList<>();
+        PhotoAdapter adapter = new PhotoAdapter(this, photosList);
+        gridViewPhotos.setAdapter(adapter);
 
         editTextTripName = findViewById(R.id.editTextTripName);
         editTextDescription = findViewById(R.id.editTextDescription);
         editTextDestination = findViewById(R.id.editTextDestination);
         editTextStartDate = findViewById(R.id.editTextStartDate);
         editTextEndDate = findViewById(R.id.editTextEndDate);
-        gridViewPhotos = findViewById(R.id.gridViewPhotos);
-        activitiesRecyclerView = findViewById(R.id.activitiesRecyclerView);
-        activitiesList = new ArrayList<>();
         saveChangesButton = findViewById(R.id.saveChangesButton);
-        chooseStartDateImageView = findViewById(R.id.chooseStartDate);
-        chooseEndDateImageView = findViewById(R.id.chooseEndDate);
         myDiaryButton = findViewById(R.id.myDiaryButton);
 
         startDateCalendar = Calendar.getInstance();
@@ -93,11 +91,15 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
-        // Set up the layout manager and adapter for the RecyclerView
+        activitiesRecyclerView = findViewById(R.id.activitiesRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         activitiesRecyclerView.setLayoutManager(layoutManager);
-        ActivitiesAdapter activitiesAdapter = new ActivitiesAdapter(activitiesList);
+        activitiesList = new ArrayList<>();
+        activitiesAdapter = new ActivitiesAdapter(activitiesList);
         activitiesRecyclerView.setAdapter(activitiesAdapter);
+
+        chooseStartDateImageView = findViewById(R.id.chooseStartDate);
+        chooseEndDateImageView = findViewById(R.id.chooseEndDate);
 
         chooseStartDateImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +119,7 @@ public class TripDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (validateDates()) {
-                    updateTrip();
+                    updateTrip(tripId);
                 }
             }
         });
@@ -126,16 +128,15 @@ public class TripDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TripDetailsActivity.this, DiaryActivity.class);
-                intent.putExtra("tripId", tripId); // Move this line before startActivity()
+                intent.putExtra("tripId", tripId);
                 startActivity(intent);
             }
         });
 
-
-        fetchTripDetails();
+        fetchTripDetails(tripId);
     }
 
-    private void updateTrip() {
+    private void updateTrip(String tripId) {
         String newName = editTextTripName.getText().toString().trim();
         String newDescription = editTextDescription.getText().toString().trim();
         String newDestination = editTextDestination.getText().toString().trim();
@@ -153,12 +154,16 @@ public class TripDetailsActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     Trip trip = dataSnapshot.getValue(Trip.class);
                     if (trip != null) {
-                        // Update the trip object with the new values
+                        // Fetch the existing photosList from the trip object
+                        List<String> photosList = trip.getPhotos();
+
+                        // Update the trip object with the new values and the existing photosList
                         trip.setName(newName);
                         trip.setDescription(newDescription);
                         trip.setDestination(newDestination);
                         trip.setStartDate(newStartDate);
                         trip.setEndDate(newEndDate);
+                        trip.setPhotos(photosList); // Set the existing photosList to the updated trip object
 
                         // Update the trip object in the database
                         tripRef.setValue(trip)
@@ -174,37 +179,6 @@ public class TripDetailsActivity extends AppCompatActivity {
                                         displayToast(250, "Failed to update trip details: " + e.getMessage());
                                     }
                                 });
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                displayToast(250, "Failed to fetch trip details");
-            }
-        });
-    }
-
-    private void fetchTripDetails() {
-        DatabaseReference tripRef = FirebaseDatabase.getInstance().getReference("trips").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(tripId);
-        tripRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    Trip trip = dataSnapshot.getValue(Trip.class);
-                    if (trip != null) {
-                        // Update the UI with the fetched trip details
-                        editTextTripName.setText(trip.getName());
-                        editTextDescription.setText(trip.getDescription());
-                        editTextDestination.setText(trip.getDestination());
-                        editTextStartDate.setText(trip.getStartDate());
-                        editTextEndDate.setText(trip.getEndDate());
-
-                        // Fetch the photos list from the trip object
-                        List<String> photosList = trip.getPhotos();
-                        if (photosList != null) {
-                            displayPhotos();
-                        }
                     }
                 }
             }
@@ -245,25 +219,74 @@ public class TripDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void displayPhotos() {
-        // Create an adapter for the GridView to display the photos
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.item_photo, R.id.imageViewPhoto, photosList) {
-            @NonNull
+    private void fetchTripDetails(String tripId) {
+        DatabaseReference tripRef = FirebaseDatabase.getInstance().getReference("trips")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(tripId);
+
+        tripRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Trip trip = dataSnapshot.getValue(Trip.class);
+                    if (trip != null) {
+                        // Update the UI with the fetched trip details
+                        editTextTripName.setText(trip.getName());
+                        editTextDescription.setText(trip.getDescription());
+                        editTextDestination.setText(trip.getDestination());
+                        editTextStartDate.setText(trip.getStartDate());
+                        editTextEndDate.setText(trip.getEndDate());
 
-                // Load and display the photo from the URL using an image loading library like Glide
-                ImageView imageViewPhoto = view.findViewById(R.id.imageViewPhoto);
-                String photoUrl = getItem(position);
-                Glide.with(TripDetailsActivity.this)
-                        .load(photoUrl)
-                        .into(imageViewPhoto);
+                        List<String> photosList = new ArrayList<>();
+                        if (dataSnapshot.child("photosList").exists()) {
+                            for (DataSnapshot photoSnapshot : dataSnapshot.child("photosList").getChildren()) {
+                                String photoUrl = photoSnapshot.getValue(String.class);
+                                photosList.add(photoUrl);
+                            }
+                        }
 
-                return view;
+                        Log.d("FetchTripDetails", "Photos list: " + photosList);
+                        if (!photosList.isEmpty()) {
+                            displayPhotos(photosList);
+                        } else {
+                            Log.d("FetchTripDetails", "Photos list is empty");
+                        }
+
+                        List<String> activitiesList = new ArrayList<>();
+                        if (dataSnapshot.child("activities").exists()) {
+                            for (DataSnapshot activitySnapshot : dataSnapshot.child("activities").getChildren()) {
+                                String activityName = activitySnapshot.getValue(String.class);
+                                activitiesList.add(activityName);
+                            }
+                        }
+
+                        // Update the activities list in the adapter
+                        activitiesAdapter.updateActivities(activitiesList);
+                    }
+                } else {
+                    Log.d("FetchTripDetails", "Data snapshot does not exist");
+                }
             }
-        };
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                displayToast(250, "Failed to fetch trip details");
+            }
+        });
+    }
+
+    private void displayPhotos(List<String> photosList) {
+        WrappingGridView gridViewPhotos = findViewById(R.id.gridViewPhotos);
+
+        List<String> photoUrls = new ArrayList<>();
+
+        for (String photo : photosList) {
+            photoUrls.add(photo);
+        }
+
+        PhotoAdapter adapter = new PhotoAdapter(this, photoUrls);
         gridViewPhotos.setAdapter(adapter);
+        Log.d("DisplayPhotos", "Adapter set with " + photoUrls.size() + " photos");
     }
 
     private void displayToast(int yOffSet, String message){
@@ -284,6 +307,4 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         toast.show();
     }
-
-
 }

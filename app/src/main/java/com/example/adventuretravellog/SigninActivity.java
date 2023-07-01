@@ -18,6 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.adventuretravellog.Model.Users;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,6 +34,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -41,12 +47,14 @@ public class SigninActivity extends AppCompatActivity {
     private EditText email, password;
     private Button loginButton;
     private Button continueWithGoogle;
-    private LinearLayout createAnAccount;
+    private LinearLayout createAnAccount, signInWithGoogle;
     private TextView forgotPassword;
 
     private FirebaseAuth auth;
     private FirebaseUser firebaseUser;
     private FirebaseFirestore db;
+
+    private GoogleSignInClient client;
 
 
     @Override
@@ -62,9 +70,17 @@ public class SigninActivity extends AppCompatActivity {
         forgotPassword = findViewById(R.id.forgotPassword);
 
         createAnAccount = findViewById(R.id.creatanaccount);
+        signInWithGoogle = findViewById(R.id.continueWithGoogleSignin);
 
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
+
+        GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        client = GoogleSignIn.getClient(this, options);
 
         createAnAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +90,14 @@ public class SigninActivity extends AppCompatActivity {
                     FirebaseAuth.getInstance().signOut();
                 }
                 startActivity(new Intent(SigninActivity.this, SignupActivity.class));
+            }
+        });
+
+        signInWithGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = client.getSignInIntent();
+                startActivityForResult(intent, 123);
             }
         });
 
@@ -108,6 +132,64 @@ public class SigninActivity extends AppCompatActivity {
                 startActivity(new Intent(SigninActivity.this, ForgetPasswordActivity.class));
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 123){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                AuthCredential authCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+
+                auth.signInWithCredential(authCredential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        if (task.isSuccessful()){
+                            FirebaseUser firebaseUser = auth.getCurrentUser();
+                            Users users = new Users();
+
+                            assert firebaseUser != null;
+
+                            String email = firebaseUser.getEmail();
+                            String userName = firebaseUser.getDisplayName();
+                            String phoneNumber = firebaseUser.getPhoneNumber();
+
+                            users.setEmail(email);
+                            users.setUsername(userName);
+                            users.setMobile(phoneNumber);
+
+                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
+                            Users user = new Users(userName, email, phoneNumber);
+                            userRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        displayToast(250, "Registered Successfully!");
+                                        startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
+                                        finish();
+                                    } else {
+                                        displayToast(250, task.getException().getMessage());
+                                    }
+                                }
+                            });
+
+                            Intent intent = new Intent(SigninActivity.this, DashboardActivity.class);
+                            startActivity(intent);
+                        }
+                        else{
+                            displayToast(250, task.getException().getMessage());
+                        }
+                    }
+                });
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     private void displayToast(int yOffSet, String message){

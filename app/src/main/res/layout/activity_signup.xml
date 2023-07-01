@@ -106,7 +106,7 @@
             android:focusable="true"
             android:fontFamily="@font/roboto"
             android:paddingStart="7dp"
-            android:text="I agree to Skymute "
+            android:text="I agree to ATLog "
             android:textColor="@color/white"
             android:textSize="12sp" />
 
